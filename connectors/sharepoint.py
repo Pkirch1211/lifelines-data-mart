@@ -12,13 +12,14 @@ from io import BytesIO
 # ---------------------------------------------------------------------------
 # Config — loaded from environment variables / GitHub Actions secrets
 # ---------------------------------------------------------------------------
-TENANT_ID   = os.environ["MS_TENANT_ID"]
-CLIENT_ID   = os.environ["MS_CLIENT_ID"]
+TENANT_ID     = os.environ["MS_TENANT_ID"]
+CLIENT_ID     = os.environ["MS_CLIENT_ID"]
 CLIENT_SECRET = os.environ["MS_CLIENT_SECRET"]
 
-SITE_ID = "toy.sharepoint.com,9cce391d-0f9c-4530-9fe1-0735393d2d27,0db41735-03c9-45f7-99e2-dcae27ef4500"
-ITEM_MASTER_PATH = "Shared Documents/Planning/3) Planning BOM/Master BOM.xlsx"
+DRIVE_ID         = "b!HTnOnJwPMEWf4Qc1OT0tJzUXtA3JA_dFmeLcrifvRQA3dGqF56dSRIF8RuQ19ZxM"
+ITEM_MASTER_PATH = "Planning/3) Planning BOM/Master BOM.xlsx"
 ITEM_MASTER_SHEET = "SBOM"
+
 
 # ---------------------------------------------------------------------------
 # Auth
@@ -43,8 +44,8 @@ def _get_token() -> str:
 def _fetch_file(file_path: str) -> bytes:
     token = _get_token()
     url = (
-        f"https://graph.microsoft.com/v1.0/sites/{SITE_ID}"
-        f"/drive/root:/{file_path}:/content"
+        f"https://graph.microsoft.com/v1.0/drives/{DRIVE_ID}"
+        f"/root:/{file_path}:/content"
     )
     response = requests.get(url, headers={"Authorization": f"Bearer {token}"})
     response.raise_for_status()
